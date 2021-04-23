@@ -9,6 +9,7 @@ class RegistrationController extends Controller
 {
     public function register(Request $request)
     {
+        //TODO Request validation
         $existingUser = User::where('email', $request->get('email'))->first();
 
         if (!empty($existingUser))

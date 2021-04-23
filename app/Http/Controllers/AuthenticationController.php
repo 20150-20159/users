@@ -14,6 +14,7 @@ class AuthenticationController extends Controller
 
     public function authenticateUser(Request $request)
     {
+        //TODO Request validation
         $user = User::where('email', $request->get('email'))->with('roles')->first();
 
         if (!empty($user))
