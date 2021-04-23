@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/register', [RegistrationController::class, 'register']);
-Route::get('/user/{user}', [AuthenticationController::class, 'getUser']);
+Route::get('/user/{user}', [AuthenticationController::class, 'getUser'])->middleware('api');
 Route::post('/user/authenticate', [AuthenticationController::class, 'authenticateUser']);
 
 // JWT Authentication

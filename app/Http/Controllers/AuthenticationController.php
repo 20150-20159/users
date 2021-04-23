@@ -4,32 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class AuthenticationController extends Controller
 {
-    public function getUser(User $user): User
-    {
-        return $user;
-    }
-
-    public function authenticateUser(Request $request)
-    {
-        //TODO Request validation
-        $user = User::where('email', $request->input('email'))->with('roles')->first();
-
-        if (!empty($user))
-        {
-            if (!Hash::check($request->input('password'), $user->password))
-            {
-                return response('User/password combination not found', 401);
-            }
-        }
-
-        return response($user);
-    }
-
     public function login(): JsonResponse
     {
         $credentials = request(['email', 'password']);
@@ -48,7 +25,13 @@ class AuthenticationController extends Controller
      */
     public function me(): JsonResponse
     {
-        return response()->json(auth()->user());
+        $user = User::where('id', (auth()->id()))->with('roles')->first();
+        if (empty($user))
+        {
+            return response()->json('Unauthorized', 401);
+        }
+
+        return response()->json($user);
     }
 
     /**
