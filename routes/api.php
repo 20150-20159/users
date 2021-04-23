@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/register', [RegistrationController::class, 'register']);
+Route::get('/user/{user}', [AuthenticationController::class, 'getUser']);
+Route::post('/user/authenticate', [AuthenticationController::class, 'authenticateUser']);
+
+// JWT Authentication
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
+    Route::post('login', [AuthenticationController::class, 'login']);
+    Route::post('logout', [AuthenticationController::class, 'logout']);
+    Route::post('refresh', [AuthenticationController::class, 'refresh']);
+    Route::post('me', [AuthenticationController::class, 'me']);
 });
