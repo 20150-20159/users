@@ -14,7 +14,7 @@ class AuthenticationController extends Controller
 
     public function authenticateUser(Request $request)
     {
-        $user = User::where('email', $request->get('email'))->first();
+        $user = User::where('email', $request->get('email'))->with('roles')->first();
 
         if (!empty($user))
         {
