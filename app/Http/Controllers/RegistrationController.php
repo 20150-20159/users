@@ -18,6 +18,7 @@ class RegistrationController extends Controller
 
         User::create([
             'name' => $request->get('name'),
+            'surname' => $request->get('surname'),
             'email' => $request->get('email'),
             'password' => password_hash($request->get('password'), PASSWORD_DEFAULT),
             'vat' => $request->get('vat')
