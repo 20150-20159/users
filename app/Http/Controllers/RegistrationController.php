@@ -38,7 +38,7 @@ class RegistrationController extends Controller
         ]);
 
         try {
-            Http::post(env('NOTIFICATIONS_URL').'/api/registrationSuccess', [
+            Http::post(env('NOTIFICATIONS_URL').'/registrationSuccess', [
                 'name' => $user->name . ' ' . $user->surname,
                 'to' => $user->email,
             ]);
