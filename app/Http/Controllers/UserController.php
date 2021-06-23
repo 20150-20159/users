@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function getUserByVat(Request $request)
+    public function getUserIdByVat(Request $request)
     {
         $user = User::where('vat', $request->get('vat'))->first();
 
@@ -15,6 +15,6 @@ class UserController extends Controller
             return response('User not found', 400);
         }
 
-        return $user;
+        return $user->id;
     }
 }

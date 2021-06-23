@@ -29,4 +29,4 @@ Route::group([
     Route::post('me', [AuthenticationController::class, 'me']);
 });
 
-Route::get('/getUserByVat', [UserController::class, 'getUserByVat'])->middleware('auth:api');
+Route::get('/getUserIdByVat', [UserController::class, 'getUserIdByVat']);
