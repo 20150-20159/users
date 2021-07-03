@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-mysql
+  labels:
+    app: myappuserdb
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3306
+  selector:
+    component: users-mysql
+    app: myappuserdb
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: users-mysql-pv-claim
+  labels:
+    app: users-mysql-app
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-mysql
+  labels:
+    app: myappuserdb
+spec:
+  selector:
+    matchLabels:
+      component: users-mysql
+      app: myappuserdb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        component: users-mysql
+        app: myappuserdb
+    spec:
+      containers:
+        - image: mysql:8
+          name: users-mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: 'root'
+            - name: MYSQL_DATABASE
+              value: 'users'
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: users-mysql-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: users-mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: users-mysql-pv-claim

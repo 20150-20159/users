@@ -37,6 +37,9 @@ class RegistrationController extends Controller
             'vat' => $request->input('vat')
         ]);
 
+        $user->roles()->attach(1);
+        $user->update();
+
         try {
             Http::post(env('NOTIFICATIONS_URL').'/registrationSuccess', [
                 'name' => $user->name . ' ' . $user->surname,

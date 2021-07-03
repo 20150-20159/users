@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: users
+      app: myappusers
+  template:
+    metadata:
+      labels:
+        component: users
+        app: myappusers
+    spec:
+      containers:
+        - name: users
+          image: 'mitsosf/users:2.0.0'
+          ports:
+            - containerPort: 80
+          imagePullPolicy: Always
